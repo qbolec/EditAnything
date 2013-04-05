@@ -34,6 +34,8 @@ document.body.addEvent('click:relay(.editable)',function(e,el){
           alert("Could not save changes :(");
         }
       }).send();
-    } 
+    } else {
+      textarea.dispose();
+    }
   })
 })
