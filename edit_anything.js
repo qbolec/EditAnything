@@ -1,6 +1,9 @@
 document.body.addEvent('click:relay(.editable)',function(e,el){
-  var value = el.get('data-value') || el.get('text');
-  var url = el.get('data-update-url');
+  e.preventDefault();
+  for(var p=el;!p.get('data-update-url');p=p.parentNode){
+  }
+  var value = p.get('data-value') || p.get('text');
+  var url = p.get('data-update-url');
   var pos = el.getPosition(document.body);
   var size = el.getSize();
   
@@ -18,7 +21,6 @@ document.body.addEvent('click:relay(.editable)',function(e,el){
   textarea.addEvent('blur',function(){
     var newValue = textarea.value;
     if(newValue != value){
-      console.log("please change",value,newValue);
       new Request.JSON({
         'method':'POST',
         'url':url,
@@ -26,8 +28,8 @@ document.body.addEvent('click:relay(.editable)',function(e,el){
           'data' : JSON.encode(newValue)
         },
         'onSuccess':function(json){
-          el.set('data-value',json.value);
-          el.set('html',json.html);
+          p.set('data-value',json.value);
+          p.set('html',json.html);
           textarea.dispose();
         },
         'onFailure':function(json){
